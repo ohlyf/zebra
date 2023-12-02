@@ -1,13 +1,12 @@
 import React from 'react';
-import {SafeAreaView, StatusBar, Text, View} from 'react-native';
+import {SafeAreaView, StatusBar} from 'react-native';
+import TextDemo from './demo/TextDemo';
 
 const App = () => {
   return (
     <SafeAreaView>
       <StatusBar />
-      <View>
-        <Text>Hello World</Text>
-      </View>
+      <TextDemo />
     </SafeAreaView>
   );
 };
