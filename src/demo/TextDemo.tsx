@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View, Text, Platform} from 'react-native';
+import { StyleSheet, View, Text, Platform } from 'react-native';
 
 export default () => {
   return (
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
       },
     }),
     textShadowColor: '#808080',
-    textShadowOffset: {width: 2, height: 4},
+    textShadowOffset: { width: 2, height: 4 },
     textShadowRadius: 8,
   },
 });
