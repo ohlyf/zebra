@@ -12,7 +12,7 @@ import {
 
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
-
+import {formatPhone, replaceBlank} from '../../utils/StringUtil';
 import icon_main_logo from '../../assets/icon_main_logo.png';
 import icon_unselected from '../../assets/icon_unselected.png';
 import icon_selected from '../../assets/icon_selected.png';
@@ -31,6 +31,8 @@ export default () => {
   const [check, setCheck] = useState<boolean>(false);
   const [eyeOpen, setEyeOpen] = useState<boolean>(false);
   const navigation = useNavigation<StackNavigationProp<any>>();
+  const [phone, setPhone] = useState<string>('');
+  const [pwd, setPwd] = useState<string>('');
   const renderQuickLogin = () => {
     const styles = StyleSheet.create({
       root: {
@@ -239,6 +241,15 @@ export default () => {
         borderRadius: 28,
         marginTop: 20,
       },
+      loginButtonDisable: {
+        width: '100%',
+        height: 56,
+        backgroundColor: '#dddddd',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 28,
+        marginTop: 20,
+      },
       loginText: {
         fontSize: 20,
         color: 'white',
@@ -269,6 +280,8 @@ export default () => {
         height: 28,
       },
     });
+
+    const canLogin = phone?.length === 13 && pwd?.length === 6 && check;
     return (
       <View style={styles.root}>
         <Text style={styles.pwdLogin}>账号密码登录</Text>
@@ -281,6 +294,12 @@ export default () => {
             placeholderTextColor="#bbb"
             placeholder="请输入手机号码"
             autoFocus={false}
+            keyboardType="number-pad"
+            maxLength={13}
+            value={phone}
+            onChangeText={(text: string) => {
+              setPhone(formatPhone(text));
+            }}
           />
         </View>
         <View style={styles.pwdLayout}>
@@ -289,6 +308,13 @@ export default () => {
             placeholderTextColor="#bbb"
             placeholder="请输入密码"
             autoFocus={false}
+            keyboardType="number-pad"
+            maxLength={6}
+            secureTextEntry={!eyeOpen}
+            value={pwd}
+            onChangeText={(text: string) => {
+              setPwd(text);
+            }}
           />
           <TouchableOpacity
             onPress={() => {
@@ -307,10 +333,16 @@ export default () => {
         </View>
 
         <TouchableOpacity
-          activeOpacity={0.7}
-          style={styles.loginButton}
+          activeOpacity={canLogin ? 0.7 : 1}
+          style={canLogin ? styles.loginButton : styles.loginButtonDisable}
           onPress={() => {
+            if (!canLogin || !check) {
+              return;
+            }
             navigation.replace('HomeTab');
+            const purePhone = replaceBlank(phone);
+            console.log('purePhone', purePhone);
+            // TODO: 登录
           }}>
           <Text style={styles.loginText}>登录</Text>
         </TouchableOpacity>
